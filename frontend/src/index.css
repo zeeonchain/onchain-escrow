@@ -16,6 +16,30 @@ body {
     linear-gradient(#1A1D26 1px, transparent 1px),
     linear-gradient(90deg, #1A1D26 1px, transparent 1px);
   background-size: 32px 32px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent 40%, rgba(45, 212, 191, 0.16) 50%, transparent 60%);
+  background-size: 250% 100%;
+  animation: sweep 6s linear infinite;
+}
+
+@keyframes sweep {
+  0% { background-position: 0% 0; }
+  100% { background-position: 100% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    display: none;
+  }
 }
 
 @keyframes fade-in {

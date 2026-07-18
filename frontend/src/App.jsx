@@ -9,7 +9,7 @@ export default function App() {
   const { deals, isLoading, refetch } = useEscrowDeals()
 
   return (
-    <div className="min-h-screen bg-vault-bg px-4 py-10 font-body sm:px-8">
+    <div className="min-h-screen px-4 py-10 font-body sm:px-8">
       <div className="mx-auto max-w-3xl">
         <header className="mb-10 flex items-center justify-between">
           <div className="flex items-center gap-3">
