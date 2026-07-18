@@ -18,7 +18,7 @@ export default function App() {
             </div>
             <div>
               <h1 className="font-display text-xl font-semibold leading-tight text-ink">Escrow</h1>
-              <p className="text-xs text-ink-muted">Base Sepolia</p>
+              <p className="text-xs text-ink-muted">Monad Testnet</p>
             </div>
           </div>
           <ConnectButton />
