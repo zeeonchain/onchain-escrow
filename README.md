@@ -10,7 +10,7 @@ A trustless escrow between two strangers. A buyer locks funds in a smart contrac
 
 ## How it works
 
-1. **Buyer creates a deal** — names a seller address, sets a deadline, and sends ETH. The contract holds the funds.
+1. **Buyer creates a deal** — names a seller address, sets a deadline, and sends MON. The contract holds the funds.
 2. **Buyer releases funds** — at any point, whenever they're satisfied the seller delivered. Funds move straight to the seller.
 3. **Buyer reclaims funds** — only if the deadline has passed and the deal was never released. Funds return to the buyer.
 
@@ -46,7 +46,7 @@ state is validated, then updated, then (only after that) an external call is mad
 
 These are all covered by automated tests in `contracts/test/Escrow.test.js` — run `npm test` inside `contracts/` to see them pass.
 
-**Known limitation:** if a seller is a contract that deliberately reverts on receiving ETH, `releaseFunds` will revert too, and the funds stay locked until the deadline (at which point the buyer can reclaim). This is a deliberate trade-off of the "no arbiter" design — there's no way to force a payment through, and no admin who could override it either.
+**Known limitation:** if a seller is a contract that deliberately reverts on receiving MON, `releaseFunds` will revert too, and the funds stay locked until the deadline (at which point the buyer can reclaim). This is a deliberate trade-off of the "no arbiter" design — there's no way to force a payment through, and no admin who could override it either.
 ## Audit
 
 Before shipping, I went through the contract the way a reviewer would — checking every function against the standard categories: reentrancy, access control, integer issues, griefing, timestamp manipulation, and fund-accounting correctness.
@@ -55,7 +55,7 @@ Before shipping, I went through the contract the way a reviewer would — checki
 
 **Access control** — Clean. Every state-changing function checks `msg.sender` against the correct role before touching state. No function is missing a guard.
 
-**Fund accounting** — Clean. The contract never holds ETH it doesn't have a record of. It also has no `receive()` or `fallback()`, so a direct ETH transfer to the contract (outside of `createDeal`) simply reverts — no stray, untracked funds can ever get stuck.
+**Fund accounting** — Clean. The contract never holds MON it doesn't have a record of. It also has no `receive()` or `fallback()`, so a direct MON transfer to the contract (outside of `createDeal`) simply reverts — no stray, untracked funds can ever get stuck.
 
 **Two informational findings** (neither is exploitable, both worth naming rather than glossing over):
 
@@ -103,7 +103,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Open the local URL, connect a wallet on Base Sepolia (get free testnet ETH from a [Base Sepolia faucet](https://www.alchemy.com/faucets/base-sepolia)), and create a deal.
+Open the local URL, connect a wallet on Monad Testnet (get free testnet MON from a [Monad faucet](https://faucet.monad.xyz/)), and create a deal.
 
 ## Environment variables
 
