@@ -71,7 +71,7 @@ useEffect(() => {
         <div>
           <p className="font-display text-sm text-ink-muted">Deal #{deal.id.toString()}</p>
           <p className="mt-1 font-display text-xl font-semibold text-ink">
-            {formatEther(deal.amount)} ETH
+            {formatEther(deal.amount)} MON
           </p>
         </div>
         <span

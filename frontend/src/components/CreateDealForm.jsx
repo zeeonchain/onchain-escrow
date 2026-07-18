@@ -82,7 +82,7 @@ useEffect(() => {
         </div>
 
         <div>
-          <label className="mb-1.5 block text-xs font-medium text-ink-muted">Amount (ETH)</label>
+          <label className="mb-1.5 block text-xs font-medium text-ink-muted">Amount (MON)</label>
           <input
             type="number"
             step="any"
