@@ -117,7 +117,7 @@ useEffect(() => {
             rel="noopener noreferrer"
             className="text-sm text-accent underline underline-offset-4 hover:text-accent-dim"
           >
-            View transaction on Basescan ↗
+            View transaction on Monad Explorer ↗
           </a>
         )}
 
