@@ -1,10 +1,14 @@
 # Onchain Escrow
 
-A trustless escrow between two strangers. A buyer locks funds in a smart contract, names a seller, and sets a deadline. The buyer can release the funds to the seller whenever they're satisfied, or reclaim them once the deadline passes with nothing delivered. There is no arbiter, no admin key, and no way for anyone but the buyer to move the funds. The contract is the only referee.
+A classmate of mine mentioned this a few times between classes — she'd pay someone upfront for a small task or some digital work, and then just... hope. No way to know if they'd actually deliver until it was too late to do anything about it if they didn't.
 
-**Live app:** _add your Vercel URL here_
+It got me thinking about why that has to be an all-or-nothing thing. Either you pay upfront and trust blindly, or you don't pay and probably lose the deal. There's no in-between where you can commit the money but still hold some leverage.
+
+Onchain Escrow lets a buyer lock funds for a specific person with a deadline, instead of sending them directly. The buyer can release the funds once they're confident the other side delivered, or reclaim them if the deadline passes with nothing done. There is no arbiter, no admin key, and no way for anyone but the buyer to move the funds. The contract is the only referee.
+
+**Live app:** https://onchain-escrow-six.vercel.app
 **Demo video:** _add your 3-minute demo link here_
-**Deployed contract (Base Sepolia):** `0x1D22745DEf4231a195104eB3B16af11750436637` — [view on Basescan](https://sepolia.basescan.org/address/0x1D22745DEf4231a195104eB3B16af11750436637)
+**Deployed contract (Monad Testnet):** `0x347a6E644e26C44003C848D564EB3ad75cde7DC0` — [view on Monad Explorer](https://testnet.monadexplorer.com/contracts/full_match/10143/0x347a6E644e26C44003C848D564EB3ad75cde7DC0/)
 
 ---
 
@@ -18,10 +22,8 @@ Every deal is permanently one of three states: `Active`, `Released`, or `Reclaim
 
 ## Architecture
 
-```
 contracts/   Solidity contract, Hardhat project, full test suite
 frontend/    React + Vite + Tailwind, wagmi + viem + RainbowKit
-```
 
 The contract is deliberately minimal: one struct, one mapping, three state-changing functions, three events. No proxy, no upgradeability, no admin — there's nothing to make trustless if the deployer can still pull a lever.
 
@@ -47,6 +49,7 @@ state is validated, then updated, then (only after that) an external call is mad
 These are all covered by automated tests in `contracts/test/Escrow.test.js` — run `npm test` inside `contracts/` to see them pass.
 
 **Known limitation:** if a seller is a contract that deliberately reverts on receiving MON, `releaseFunds` will revert too, and the funds stay locked until the deadline (at which point the buyer can reclaim). This is a deliberate trade-off of the "no arbiter" design — there's no way to force a payment through, and no admin who could override it either.
+
 ## Audit
 
 Before shipping, I went through the contract the way a reviewer would — checking every function against the standard categories: reentrancy, access control, integer issues, griefing, timestamp manipulation, and fund-accounting correctness.
@@ -63,16 +66,17 @@ Before shipping, I went through the contract the way a reviewer would — checki
 2. **Deadlines rely on `block.timestamp`**, which miners/sequencers can nudge by a few seconds. Standard, accepted behavior for deadlines measured in minutes/hours/days — it would only matter for something needing sub-second precision, which this isn't.
 
 No critical, high, or medium severity findings.
+
 ## Tech stack
 
 | Layer | Choice |
 |---|---|
 | Contract | Solidity + Hardhat |
-| Chain | Base Sepolia (testnet) |
+| Chain | Monad Testnet |
 | Frontend | React + Vite + Tailwind CSS |
 | Chain connection | wagmi + viem + RainbowKit |
-| RPC | Alchemy |
-| Deployment | Vercel (frontend), Basescan (contract verification) |
+| RPC | Monad public RPC |
+| Deployment | Vercel (frontend), Sourcify via Monad Explorer (contract verification) |
 
 ## Running it locally
 
@@ -82,15 +86,15 @@ No critical, high, or medium severity findings.
 cd contracts
 npm install
 cp .env.example .env
-# fill in ALCHEMY_BASE_SEPOLIA_URL, PRIVATE_KEY, BASESCAN_API_KEY
+# fill in PRIVATE_KEY
 npm test
 ```
 
-To deploy and verify on Base Sepolia:
+To deploy and verify on Monad Testnet:
 ```bash
-npm run deploy:baseSepolia
+npm run deploy:monadTestnet
 # copy the printed address, then:
-npm run verify:baseSepolia -- <deployed-address>
+npm run verify:monadTestnet -- <deployed-address>
 ```
 
 ### 2. Frontend
@@ -99,11 +103,11 @@ npm run verify:baseSepolia -- <deployed-address>
 cd frontend
 npm install
 cp .env.example .env
-# fill in VITE_ALCHEMY_API_KEY, VITE_WALLETCONNECT_PROJECT_ID, VITE_CONTRACT_ADDRESS
+# fill in VITE_WALLETCONNECT_PROJECT_ID, VITE_CONTRACT_ADDRESS
 npm run dev
 ```
 
-Open the local URL, connect a wallet on Monad Testnet (get free testnet MON from a [Monad faucet](https://faucet.monad.xyz/)), and create a deal.
+Open the local URL, connect a wallet on Monad Testnet (get free testnet MON from the [Monad faucet](https://faucet.monad.xyz/)), and create a deal.
 
 ## Environment variables
 
