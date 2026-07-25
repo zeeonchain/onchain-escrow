@@ -7,7 +7,7 @@ It got me thinking about why that has to be an all-or-nothing thing. Either you 
 Onchain Escrow lets a buyer lock funds for a specific person with a deadline, instead of sending them directly. The buyer can release the funds once they're confident the other side delivered, or reclaim them if the deadline passes with nothing done. There is no arbiter, no admin key, and no way for anyone but the buyer to move the funds. The contract is the only referee.
 
 **Live app:** https://onchain-escrow-six.vercel.app
-**Demo video:** _add your 3-minute demo link here_
+**Demo video:** https://x.com/zeeesol/status/2078797645980577900/video/1?s=46
 **Deployed contract (Monad Testnet):** `0x347a6E644e26C44003C848D564EB3ad75cde7DC0` — [view on Monad Explorer](https://testnet.monadexplorer.com/contracts/full_match/10143/0x347a6E644e26C44003C848D564EB3ad75cde7DC0/)
 
 ---
